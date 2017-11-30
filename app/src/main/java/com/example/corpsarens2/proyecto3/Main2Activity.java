@@ -242,7 +242,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
             admitir=false;
         }
         int edad1 = año_hoy-recuperar_año;
-        if (edad1<19){
+        if (edad1<18){
             Fecha_Nacimiento.setError(getString(R.string.error_edad));
             Fecha_Nacimiento.requestFocus();
             admitir=false;
