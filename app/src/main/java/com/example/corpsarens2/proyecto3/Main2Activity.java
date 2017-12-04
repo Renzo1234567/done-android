@@ -47,7 +47,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     ImageView Icono6;
     ImageView Icono7;
     int dia,mes,año;
-    int año_hoy;
+    int año_hoy,dia_hoy,mes_hoy;
     int recuperar_año,recuperar_mes,recuperar_dia;
     Boolean admitir=true;
 
@@ -84,20 +84,13 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
               password = Contraseña.getText().toString();
                username = Usuario.getText().toString();
                apellido = Apellido.getText().toString();
-               Fecha_Nacimiento.setText(recuperar_mes + "/" + recuperar_dia + "/" + recuperar_año);
                fechaDeNacimiento = Fecha_Nacimiento.getText().toString();
                formaDeRegistro ="Android";
 
-               Log.i("Email", email);
-               Log.i("Username", username);
-               Log.i("Contraseña", password);
-               Log.i("Nombre", nombre);
-               Log.i("Apellido", apellido);
-               Log.i("Fecha De Nacimiento", fechaDeNacimiento);
-               Log.i("Forma De Registro", formaDeRegistro);
+
+
 
                if (admitir == true) {
-                   Fecha_Nacimiento.setText(recuperar_dia + "/" + recuperar_mes + "/" + recuperar_año);
                    Usuarios usuario = new Usuarios(
                            email,
                            username,
@@ -117,18 +110,8 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     }
 
     private void sendRequestNetwork(Usuarios usuario) {
-    OkHttpClient.Builder okhttpClientBuilder=new OkHttpClient.Builder();
-        HttpLoggingInterceptor loggin=new HttpLoggingInterceptor();
-        loggin.setLevel(HttpLoggingInterceptor.Level.BODY);
-        okhttpClientBuilder.addInterceptor(loggin);
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://intense-lake-39874.herokuapp.com")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(okhttpClientBuilder.build());
-
-        Retrofit retrofit = builder.build();
-
-
+        SendNetworkRequest enviar=new SendNetworkRequest();
+        Retrofit retrofit=enviar.Enviar();
         UserClient service = retrofit.create(UserClient.class);
         Call<Usuarios> call = service.create(usuario);
 
@@ -140,15 +123,13 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                         Toast.makeText(getApplicationContext(),"Usuario registrado! "+response.body().getMessage(),Toast.LENGTH_LONG).show();
                 } else
                 {
-
                     try
                     { JSONArray jObjError = new JSONArray(response.errorBody().string());
-                        Toast.makeText(getApplicationContext(),"Algo fallo... "+jObjError.getJSONObject(0).getString("mensaje"),Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),jObjError.getJSONObject(0).getString("mensaje"),Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Toast.makeText(getApplicationContext(),"Algo fallo... "+ e.getMessage() , Toast.LENGTH_LONG).show();
                     }
                 }
-
             }
 
             @Override
@@ -181,60 +162,45 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
 
         if (TextUtils.isEmpty(email)){
-            Email.setError(getString(R.string.error_campo_obligatorio));
-            Email.requestFocus();
-            admitir=false;
+           validarvacio(Email);
         }
-
         if (TextUtils.isEmpty(nombre)){
-            Nombre.setError(getString(R.string.error_campo_obligatorio));
-            Nombre.requestFocus();
-            admitir=false;
+            validarvacio(Nombre);
         }
         if (TextUtils.isEmpty(apellido)){
-            Apellido.setError(getString(R.string.error_campo_obligatorio));
-            Apellido.requestFocus();
-            admitir=false;
+            validarvacio(Apellido);
         }
         if (TextUtils.isEmpty(usuario)){
-           Usuario.setError(getString(R.string.error_campo_obligatorio));
-           Usuario.requestFocus();
-            admitir=false;
+            validarvacio(Usuario);
         }
         if (TextUtils.isEmpty(contraseña)){
-            Contraseña.setError(getString(R.string.error_campo_obligatorio));
-            Contraseña.requestFocus();
-            admitir=false;
+            validarvacio(Contraseña);
         }
         if (TextUtils.isEmpty(repetir_contraseña)){
-            Repetir_Contraseña.setError(getString(R.string.error_campo_obligatorio));
-            Contraseña.requestFocus();
-            admitir=false;
+            validarvacio(Repetir_Contraseña);
         }
         if (TextUtils.isEmpty(fecha_nacimiento)){
-            Fecha_Nacimiento.setError(getString(R.string.error_campo_obligatorio));
-            Fecha_Nacimiento.requestFocus();
-            admitir=false;
+            validarvacio(Fecha_Nacimiento);
         }
-        if(nombre.length()>50){
-            Nombre.setError(getString(R.string.error_longitud));
-            Nombre.requestFocus();
-            admitir=false;
+        if(nombre.length()>50 || nombre.length()<1){
+            validarlongitud(Nombre);
         }
-        if(apellido.length()>50){
-            Apellido.setError(getString(R.string.error_longitud));
-            Apellido.requestFocus();
-            admitir=false;
+        if(apellido.length()>50 || apellido.length()<1){
+            validarlongitud(Apellido);
         }
-        if(contraseña.length()>50){
-            Contraseña.setError(getString(R.string.error_longitud));
+        if(usuario.length()>20 || usuario.length()<1){
+           Usuario.setError(getString(R.string.error_longitud_usuario));
+            Usuario.requestFocus();
+            admitir=false;
+
+        }
+        if(contraseña.length()>50 ||  contraseña.length()<8){
+            Contraseña.setError(getString(R.string.error_longitud_contraseña));
             Contraseña.requestFocus();
             admitir=false;
         }
-        if(repetir_contraseña.length()>50){
-            Repetir_Contraseña.setError(getString(R.string.error_longitud));
-            Repetir_Contraseña.requestFocus();
-            admitir=false;
+        if (email.length()>50){
+            validarlongitud(Email);
         }
         if (contraseña.equals(repetir_contraseña)==false) {
             Repetir_Contraseña.setError(getString(R.string.error_contraseña));
@@ -248,6 +214,29 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
             admitir=false;
 
         }
+        if (edad1==18 && mes_hoy>recuperar_mes){
+            admitir=true;
+        }
+
+        if(edad1==18 &&mes_hoy<recuperar_mes){
+            Fecha_Nacimiento.setError(getString(R.string.error_edad));
+            Fecha_Nacimiento.requestFocus();
+            admitir=false;
+        }
+        if (edad1==18 && mes_hoy==recuperar_mes){
+            if (dia_hoy>recuperar_dia){
+                admitir=true;
+            }
+            if(dia_hoy<recuperar_dia){
+                Fecha_Nacimiento.setError(getString(R.string.error_edad));
+                Fecha_Nacimiento.requestFocus();
+                admitir=false;
+            }
+            if(dia_hoy==recuperar_dia){
+                admitir=true;
+            }
+        }
+
 
     }
 
@@ -255,8 +244,8 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         Time today=new Time (Time.getCurrentTimezone());
         today.setToNow();
-         int dia_hoy=today.monthDay;
-        int mes_hoy=today.month;
+         dia_hoy=today.monthDay;
+         mes_hoy=today.month;
           año_hoy=today.year;
         mes_hoy=mes_hoy+1;
         if (v==Fecha_Nacimiento){
@@ -268,7 +257,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onDateSet(DatePicker datePicker, int año, int mes, int dia) {
                     mes= mes+1;
-                    Fecha_Nacimiento.setText(dia+"/"+mes+"/"+año);
+                    Fecha_Nacimiento.setText(mes+"/"+dia+"/"+año);
                     recuperar_año=año;
                     recuperar_dia=dia;
                     recuperar_mes=mes;
@@ -278,15 +267,20 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
             datePickerDialog.show();
         }
 
-        int edad;
-        int edad1 = año_hoy-año;
-        int edad2=mes_hoy-mes;
-        int edad3=dia_hoy-dia;
-        if (edad1<18){
-            Fecha_Nacimiento.setError(getString(R.string.error_edad));
-            Fecha_Nacimiento.requestFocus();
-        }
+
 
     }
+        public boolean validarvacio(EditText campo){
+            campo.setError(getString(R.string.error_campo_obligatorio));
+            campo.requestFocus();
+            admitir=false;
+            return admitir;
+        }
+        public boolean validarlongitud(EditText campo){
+            campo.setError(getString(R.string.error_longitud));
+            campo.requestFocus();
+            admitir=false;
+            return admitir;
+        }
 
 }
