@@ -2,7 +2,9 @@
     <string name="app_name">Proyecto3</string>
     <string name="reg_strate_en_done">Regístrate en Done!</string>
  <string name="error_campo_obligatorio">Campo Obligatorio!</string>
-    <string name="error_longitud">El campo debe tener menos de 50 caracteres</string>
+    <string name="error_longitud">El campo debe tener menos de 50 caracteres y mas de 1 caracter</string>
     <string name="error_contraseña">Las contraseñas no coinciden</string>
     <string name="error_edad">No se permiten menores de edad</string>
+    <string name="error_longitud_contraseña">La contraseña debe tener menos de 50 caracteres y mas de 8</string>
+    <string name="error_longitud_usuario">El usuario debe tener menos de 20 caracteres y mas de 1 caracter</string>
 </resources>

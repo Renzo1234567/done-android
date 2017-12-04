@@ -64,16 +64,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendRequestNetwork(UsuariosLogin usuarioslogin) {
-        OkHttpClient.Builder okhttpClientBuilder=new OkHttpClient.Builder();
-        HttpLoggingInterceptor loggin=new HttpLoggingInterceptor();
-        loggin.setLevel(HttpLoggingInterceptor.Level.BODY);
-        okhttpClientBuilder.addInterceptor(loggin);
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://intense-lake-39874.herokuapp.com")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(okhttpClientBuilder.build());
-
-        Retrofit retrofit = builder.build();
+        SendNetworkRequest enviar=new SendNetworkRequest();
+        Retrofit retrofit=enviar.Enviar();
         UserClient service = retrofit.create(UserClient.class);
         Call<UsuariosLogin> call = service.createLogin(usuarioslogin);
         call.enqueue(new Callback<UsuariosLogin>() {
