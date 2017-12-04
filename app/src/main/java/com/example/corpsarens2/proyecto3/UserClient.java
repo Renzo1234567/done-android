@@ -11,5 +11,9 @@ public interface UserClient {
 
 
     @POST("usuarios")
-    Call <Usuarios> create(@Body Usuarios usuarios);
+    Call<Usuarios> create(@Body Usuarios usuario);
+
+    @POST("usuarios/login")
+    Call<UsuariosLogin> createLogin(@Body UsuariosLogin usuarioslogin);
+
 }

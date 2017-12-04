@@ -17,16 +17,22 @@ public class Usuarios {
     @SerializedName("formaDeRegistro")
     String formaDeRegistro;
 
+     String mensaje;
 
-    public Usuarios(String email, String username, String password, String nombre, String apellido, String fechaDeNacimiento, String formadeRegistro){
+
+    public Usuarios(String email, String username, String password, String nombre, String apellido, String fechaDeNacimiento, String formaDeRegistro){
         this.username=username;
         this.email=email;
         this.password=password;
         this.nombre = nombre;
         this.apellido= apellido;
         this.fechaDeNacimiento = fechaDeNacimiento;
-        this.formaDeRegistro = formadeRegistro;
+        this.formaDeRegistro = formaDeRegistro;
     }
 
-            ;
+    public String getMessage(){
+        return mensaje;
+    }
+
+
 }

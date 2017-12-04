@@ -52,14 +52,6 @@
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1" />
 
-    <SeekBar
-        android:id="@+id/seekBar"
-        style="@style/Widget.AppCompat.SeekBar.Discrete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:max="10"
-        android:progress="3" />
-
     <EditText
         android:id="@+id/Contraseña_Usuario"
         android:layout_width="wrap_content"
