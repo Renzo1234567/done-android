@@ -1,6 +1,7 @@
 package com.example.corpsarens2.proyecto3;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -121,6 +122,12 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
                 if (response.isSuccessful()) {
                         Toast.makeText(getApplicationContext(),"Usuario registrado! "+response.body().getMessage(),Toast.LENGTH_LONG).show();
+
+
+                            Intent Registrarse= new Intent(Main2Activity.this,Main3Activity.class);
+                            startActivity(Registrarse);
+
+
                 } else
                 {
                     try

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_tareas"
+            android:icon="@drawable/tareaimagen"
+            android:title="Crear Tarea" />
+        <item
+            android:id="@+id/nav_vertareas"
+            android:icon="@drawable/tareaimagen"
+            android:title="Ver Tareas" />
+
+        <item
+            android:id="@+id/nav_configuracion"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Configuracion" />
+        <item
+            android:id="@+id/nav_ayuda"
+            android:icon="@drawable/ayuda"
+            android:title="Ayuda" />
+        <item
+            android:id="@+id/nav_cerrarsesion"
+            android:icon="@drawable/candado"
+            android:title="Cerrar Sesion" />
+    </group>
+
+</menu>
