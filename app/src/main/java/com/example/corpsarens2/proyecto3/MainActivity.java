@@ -74,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
                     Toast.makeText(getApplicationContext(),"Login completado ",Toast.LENGTH_LONG).show();
+                            Intent Entrar= new Intent(MainActivity.this,Main3Activity.class);
+                            startActivity(Entrar);
+
 
                 } else
                 {
