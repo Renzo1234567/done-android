@@ -14,10 +14,10 @@
 
         <TextView
             android:id="@+id/Titulo"
-            android:layout_width="78dp"
+            android:layout_width="162dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="52dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="4dp"
             android:fontFamily="casual"
             android:text="Titulo:"
             android:textColor="@android:color/black"
@@ -28,11 +28,10 @@
 
         <EditText
             android:id="@+id/Edit_Titulo"
-            android:layout_width="0dp"
+            android:layout_width="257dp"
             android:layout_height="37dp"
-            android:layout_marginEnd="47dp"
-            android:layout_marginStart="47dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="16dp"
             android:background="@android:color/background_light"
             android:ems="10"
             android:fontFamily="casual"
@@ -40,58 +39,58 @@
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="@+id/Titulo"
+            app:layout_constraintTop_toBottomOf="@+id/Titulo" />
 
         <TextView
             android:id="@+id/Descripcion"
             android:layout_width="162dp"
             android:layout_height="34dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="casual"
             android:text="Descripcion:"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/Edit_Descripcion"
-            app:layout_constraintStart_toStartOf="@+id/Edit_Titulo"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Edit_Titulo" />
 
         <EditText
             android:id="@+id/Edit_Descripcion"
-            android:layout_width="273dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
+            android:layout_width="257dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="12dp"
             android:background="@android:color/background_light"
             android:ems="10"
             android:fontFamily="casual"
             android:gravity="top"
             android:hint="Ingrese una descripcion..."
             android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/Fecha"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/Descripcion"
             app:layout_constraintTop_toBottomOf="@+id/Descripcion" />
 
         <TextView
             android:id="@+id/Fecha"
             android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="4dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="12dp"
             android:fontFamily="casual"
             android:text="Fecha para ser completada:"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/Edit_Fecha"
-            app:layout_constraintStart_toStartOf="@+id/Edit_Descripcion"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Edit_Descripcion" />
 
         <EditText
             android:id="@+id/Edit_Fecha"
-            android:layout_width="wrap_content"
+            android:layout_width="257dp"
             android:layout_height="37dp"
-            android:layout_marginBottom="47dp"
             android:layout_marginEnd="8dp"
             android:background="@android:color/background_light"
             android:digits="0123456789/"
@@ -100,9 +99,8 @@
             android:fontFamily="casual"
             android:hint="dd/mm/aaaa"
             android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/Crear_Tarea"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.022"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/Fecha"
             app:layout_constraintTop_toBottomOf="@+id/Fecha" />
 
@@ -110,14 +108,52 @@
             android:id="@+id/Crear_Tarea"
             android:layout_width="133dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="45dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:background="@android:color/holo_blue_dark"
             android:fontFamily="casual"
             android:text="Crear Tarea"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintHorizontal_bias="0.463"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinner"
+            app:layout_constraintVertical_bias="0.369" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="casual"
+            android:text="Categoria:"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Edit_Fecha" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="251dp"
+            android:layout_height="45dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+
+            android:background="@android:drawable/btn_dropdown"
+            android:entries="@array/categorias_array"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.049"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>

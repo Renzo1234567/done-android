@@ -115,7 +115,7 @@ public class Fragment_VerTareas extends Fragment {
         return vista;
     }
 
-    private void getuserclient(String token, final RecyclerView recyclerView, final ProgressDialog progressDialog) {
+    private void getuserclient(final String token, final RecyclerView recyclerView, final ProgressDialog progressDialog) {
         try{
 
             SendNetworkRequest enviar = new SendNetworkRequest();
@@ -132,7 +132,7 @@ public class Fragment_VerTareas extends Fragment {
                 progressDialog.dismiss();
                List<TareaDatos> lista=response.body().getTarea();
 
-               adapter=new AdapterDatos(lista,getContext());
+               adapter=new AdapterDatos(lista,getContext(),token);
                recyclerView.setAdapter(adapter);
 
 

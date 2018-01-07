@@ -11,13 +11,16 @@ public class Tarea {
     String descripcion;
     @SerializedName("fechaParaSerCompletada")
     String fechaParaSerCompletada;
+    @SerializedName("categoria")
+    String categoria;
 
     String mensaje;
 
-    public Tarea(String titulo,String descripcion,String fechaParaSerCompletada){
+    public Tarea(String titulo,String descripcion,String fechaParaSerCompletada,String categoria){
         this.titulo=titulo;
         this.descripcion=descripcion;
         this.fechaParaSerCompletada=fechaParaSerCompletada;
+        this.categoria=categoria;
     }
     public String getMessage(){
         return mensaje;

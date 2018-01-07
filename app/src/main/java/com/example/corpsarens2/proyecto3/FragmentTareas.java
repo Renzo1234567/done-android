@@ -11,9 +11,11 @@ import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +52,8 @@ public class FragmentTareas extends Fragment {
     TextView Fecha;
     EditText Edit_Fecha;
     Button Crear_Tarea;
+    Spinner spiner;
+    String recuperarcategoria;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -101,12 +105,27 @@ public class FragmentTareas extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
        rootView=inflater.inflate(R.layout.fragment_fragment_tareas, container, false);
+       spiner=(Spinner)rootView.findViewById(R.id.spinner) ;
        Titulo=(TextView)rootView.findViewById(R.id.Titulo);
        Descripcion=(TextView)rootView.findViewById(R.id.Descripcion);
        Fecha=(TextView)rootView.findViewById(R.id.Edit_Fecha);
        Edit_Descripcion=(EditText)rootView.findViewById(R.id.Edit_Descripcion);
        Edit_Titulo=(EditText)rootView.findViewById(R.id.Edit_Titulo);
        Edit_Fecha=(EditText)rootView.findViewById(R.id.Edit_Fecha);
+       spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+           @Override
+           public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+               recuperarcategoria=adapterView.getSelectedItem().toString();
+           }
+
+           @Override
+           public void onNothingSelected(AdapterView<?> adapterView) {
+
+           }
+       });
+
+
+
         Edit_Fecha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,17 +156,19 @@ public class FragmentTareas extends Fragment {
             }
         });
 
-
-
        Crear_Tarea=(Button)rootView.findViewById((R.id.Crear_Tarea));
+                Crear_Tarea.setEnabled(false);
             Crear_Tarea.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     String titulo,fecha,descripcion;
+                    if (recuperarcategoria.equals("Personal")){
+                        recuperarcategoria="Peronal";
+                    }
                     titulo= Edit_Titulo.getText().toString();
                     fecha= Fecha.getText().toString();
                     descripcion= Edit_Descripcion.getText().toString();
-                        Tarea creatarea=new Tarea(titulo,descripcion,fecha);
+                        Tarea creatarea=new Tarea(titulo,descripcion,fecha,recuperarcategoria);
                         sendRequestNetwork(creatarea);
                         Crear_Tarea.setEnabled(false);
                 }
@@ -184,7 +205,7 @@ public class FragmentTareas extends Fragment {
                         Toast.makeText(getActivity().getApplicationContext(),jObjError.getJSONObject(0).getString("mensaje"),Toast.LENGTH_LONG).show();
                         Crear_Tarea.setEnabled(true);
                     } catch (Exception e) {
-                        Toast.makeText(getActivity().getApplicationContext(),"Algo fallo... "+ e.getMessage() , Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity().getApplicationContext(),"Error en el Servidor "+ e.getMessage() , Toast.LENGTH_LONG).show();
                         Crear_Tarea.setEnabled(true);
                     }
                 }
@@ -192,7 +213,7 @@ public class FragmentTareas extends Fragment {
 
             @Override
             public void onFailure(Call<Tarea> call, Throwable t) {
-                Toast.makeText(getActivity().getApplicationContext(),"Algo fallo...",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(),"Error en el servidor..",Toast.LENGTH_SHORT).show();
                 Crear_Tarea.setEnabled(true);
             }
         });

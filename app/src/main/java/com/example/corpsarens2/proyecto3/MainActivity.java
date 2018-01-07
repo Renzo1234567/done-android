@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
                     {
 
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
-
                         Toast.makeText(getApplicationContext(),jObjError.getString("mensaje"),Toast.LENGTH_LONG).show();
                         Entrar.setEnabled(true);
                     } catch (Exception e) {
