@@ -151,6 +151,7 @@ public class AdapterDatos extends RecyclerView.Adapter<AdapterDatos.ViewHolderDa
                 String recuperarfecha=listaItems.getFechaParaSerCompletada();
                 String recuperardescripcion=listaItems.getDescripcion();
                 String recuperarcategoria=listaItems.getCategoria();
+                String recuperarid=listaItems.getId();
                 Intent intent = new Intent(view.getContext(),editar_Tarea.class);
                 intent.putExtra("token",token);
                 intent.putExtra("Usuario",usuario);
@@ -158,6 +159,7 @@ public class AdapterDatos extends RecyclerView.Adapter<AdapterDatos.ViewHolderDa
                 intent.putExtra("fechaParaSerCompletada",recuperarfecha);
                 intent.putExtra("categoria",recuperarcategoria);
                 intent.putExtra("descripcion",recuperardescripcion);
+                intent.putExtra("id",recuperarid);
                 view.getContext().startActivity(intent);
 
             }
@@ -223,7 +225,7 @@ public class AdapterDatos extends RecyclerView.Adapter<AdapterDatos.ViewHolderDa
     }
 
     public class ViewHolderDatos extends RecyclerView.ViewHolder {
-        TextView titulo,fecha,descripcion,_id;
+        TextView titulo,fecha,descripcion,_id,sercompletada;
         ImageView delete,edit;
         CheckBox check;
         CardView card;
@@ -236,6 +238,7 @@ public class AdapterDatos extends RecyclerView.Adapter<AdapterDatos.ViewHolderDa
             edit=(ImageView)itemView.findViewById(R.id.imageedit);
             check=(CheckBox)itemView.findViewById(R.id.checkBox);
             card=(CardView)itemView.findViewById((R.id.Card));
+            sercompletada=(TextView) itemView.findViewById(R.id.texto10);
         }
 
     }

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.Calendar;
 
@@ -41,6 +42,7 @@ public class editar_Tarea extends AppCompatActivity {
     String recuperarcategoria;
     ImageButton delete;
     String token;
+    TextView categoria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,8 @@ public class editar_Tarea extends AppCompatActivity {
         delete=(ImageButton)findViewById(R.id.deletefecha);
         Crear_Tarea=(Button)findViewById(R.id.Crear_Tarea);
         Tarea=(TextView) findViewById(R.id.Editando);
+        categoria=(TextView)findViewById(R.id.textView);
+        categoria.setVisibility(View.GONE);
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,11 +73,12 @@ public class editar_Tarea extends AppCompatActivity {
         String descripcion=getIntent().getExtras().getString("descripcion");
         String fechaParaSerCompletada=getIntent().getExtras().getString("fechaParaSerCompletada");
         String categoria=getIntent().getExtras().getString("categoria");
+        final String id=getIntent().getExtras().getString("id");
         Edit_Descripcion.setText(descripcion);
         if (fechaParaSerCompletada!=null) {
             String año1 = fechaParaSerCompletada.substring(0, 4);
-            String mes1 = fechaParaSerCompletada.substring(6, 7);
-            String dia1 = fechaParaSerCompletada.substring(9, 10);
+            String mes1 = fechaParaSerCompletada.substring(5, 7);
+            String dia1 = fechaParaSerCompletada.substring(8, 10);
             Edit_Fecha.setText(mes1 + "/" + dia1 + "/" + año1);
         }
         Edit_Titulo.setText(titulo);
@@ -88,6 +93,8 @@ public class editar_Tarea extends AppCompatActivity {
 
             }
         });
+        spiner.setVisibility(View.GONE);
+
         Edit_Fecha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,28 +135,25 @@ public class editar_Tarea extends AppCompatActivity {
                 fecha= Fecha.getText().toString();
                 descripcion= Edit_Descripcion.getText().toString();
                 if (fecha.equals("")) {
-                    Tareasinfecha creartareasinfecha=new Tareasinfecha(titulo,descripcion,recuperarcategoria);
-                    sendRequestNetworksintarea(creartareasinfecha);
+                    Tarea creatarea = new Tarea(titulo, descripcion, fecha, recuperarcategoria);
+                    sendRequestNetwork(creatarea,id);
                 }else{
                     Tarea creatarea = new Tarea(titulo, descripcion, fecha, recuperarcategoria);
-                    sendRequestNetwork(creatarea);
+                    sendRequestNetwork(creatarea,id);
 
                 }
                 String nombreusuario=getIntent().getExtras().getString("Usuario");
-                Intent intent = new Intent(getApplicationContext(),Main3Activity.class);
-                intent.putExtra("Usuario",nombreusuario);
-                intent.putExtra("token",token);
-                startActivity(intent);
+
             }
         });
 
     }
 
-    private void sendRequestNetwork(Tarea creatarea) {
+    private void sendRequestNetwork(Tarea creatarea,String id) {
         SendNetworkRequest enviar=new SendNetworkRequest();
         Retrofit retrofit=enviar.Enviar();
         UserClient service = retrofit.create(UserClient.class);
-        Call<Tarea> call = service.modificartareaconfecha(token,creatarea);
+        Call<Tarea> call = service.modificartareaconfecha(id,token,creatarea);
 
         call.enqueue(new Callback<Tarea>() {
             @Override
@@ -167,8 +171,8 @@ public class editar_Tarea extends AppCompatActivity {
                 } else
                 {
                     try
-                    { JSONArray jObjError = new JSONArray(response.errorBody().string());
-                        Toast.makeText(getApplicationContext(),jObjError.getJSONObject(0).getString("mensaje"),Toast.LENGTH_LONG).show();
+                    { JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        Toast.makeText(getApplicationContext(),jObjError.getString("mensaje"),Toast.LENGTH_LONG).show();
                         Crear_Tarea.setEnabled(true);
                     } catch (Exception e) {
                         Toast.makeText(getApplicationContext(),"Error en el Servidor "+ e.getMessage() , Toast.LENGTH_LONG).show();
@@ -186,11 +190,11 @@ public class editar_Tarea extends AppCompatActivity {
 
     }
 
-    private void sendRequestNetworksintarea(Tareasinfecha creartareasinfecha) {
+    private void sendRequestNetworksintarea(Tareasinfecha creartareasinfecha,String id) {
         SendNetworkRequest enviar= new SendNetworkRequest();
         Retrofit retrofit=enviar.Enviar();
         UserClient service=retrofit.create(UserClient.class);
-        Call<Tareasinfecha> call=service.modificartareasinfecha(token,creartareasinfecha);
+        Call<Tareasinfecha> call=service.modificarsinfecha(id,token,creartareasinfecha);
         call.enqueue(new Callback<Tareasinfecha>() {
             @Override
             public void onResponse(Call<Tareasinfecha> call, Response<Tareasinfecha> response) {
@@ -206,8 +210,8 @@ public class editar_Tarea extends AppCompatActivity {
                 } else
                 {
                     try
-                    { JSONArray jObjError = new JSONArray(response.errorBody().string());
-                        Toast.makeText(getApplicationContext(),jObjError.getJSONObject(0).getString("mensaje"),Toast.LENGTH_LONG).show();
+                    { JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        Toast.makeText(getApplicationContext(),jObjError.getString("mensaje"),Toast.LENGTH_LONG).show();
                         Crear_Tarea.setEnabled(true);
                     } catch (Exception e) {
                         Toast.makeText(getApplicationContext(),"Error en el Servidor "+ e.getMessage() , Toast.LENGTH_LONG).show();

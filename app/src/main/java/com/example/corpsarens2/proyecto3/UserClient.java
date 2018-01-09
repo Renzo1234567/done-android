@@ -49,12 +49,17 @@ public interface UserClient {
     @PATCH("usuarios/me/pass")
     Call<CambiarContrasena> cambiarcontraseña(@Header("X-auth") String token, @Body CambiarContrasena cambiarcontraseña );
 
-    @PATCH("usuario/modificar")
-    Call<Tareasinfecha> modificartareasinfecha(
-            @Header("X-auth") String token,
-            @Body Tareasinfecha tarea);
-    @PATCH("usuario/modificar")
+
+    @PATCH("tareas/{id}")
     Call<Tarea> modificartareaconfecha(
+            @Path("id") String id,
             @Header("X-auth") String token,
             @Body Tarea tarea);
+
+    @PATCH("tareas/{id}")
+    Call<Tareasinfecha>modificarsinfecha(
+            @Path("id") String id,
+            @Header("X-auth") String token,
+            @Body Tareasinfecha tarea);
+
 }
