@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fondos"
+    tools:context="com.example.corpsarens2.proyecto3.editar_Tarea">
+
+
+    <TextView
+        android:id="@+id/Titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="casual"
+        android:text="Titulo"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Editando" />
+
+    <EditText
+        android:id="@+id/Edit_Titulo"
+        android:layout_width="257dp"
+        android:layout_height="37dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/background_light"
+        android:ems="10"
+        android:fontFamily="casual"
+        android:hint="Ingrese un titulo para su tarea..."
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.156"
+        app:layout_constraintStart_toStartOf="@+id/Titulo"
+        app:layout_constraintTop_toBottomOf="@+id/Titulo" />
+
+    <TextView
+        android:id="@+id/Descripcion"
+        android:layout_width="162dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="casual"
+        android:text="Descripcion:"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Edit_Titulo" />
+
+    <EditText
+        android:id="@+id/Edit_Descripcion"
+        android:layout_width="257dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="12dp"
+        android:background="@android:color/background_light"
+        android:ems="10"
+        android:fontFamily="casual"
+        android:gravity="top"
+        android:hint="Ingrese una descripcion..."
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.156"
+        app:layout_constraintStart_toStartOf="@+id/Descripcion"
+        app:layout_constraintTop_toBottomOf="@+id/Descripcion" />
+
+    <TextView
+        android:id="@+id/Fecha"
+        android:layout_width="wrap_content"
+        android:layout_height="49dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="casual"
+        android:text="Fecha para ser completada:"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Edit_Descripcion" />
+
+    <EditText
+        android:id="@+id/Edit_Fecha"
+        android:layout_width="257dp"
+        android:layout_height="37dp"
+        android:layout_marginEnd="8dp"
+        android:background="@android:color/background_light"
+        android:digits="0123456789/"
+        android:ems="10"
+        android:focusable="false"
+        android:fontFamily="casual"
+        android:hint="dd/mm/aaaa"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.156"
+        app:layout_constraintStart_toStartOf="@+id/Fecha"
+        app:layout_constraintTop_toBottomOf="@+id/Fecha" />
+
+    <Button
+        android:id="@+id/Crear_Tarea"
+        android:layout_width="133dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/holo_blue_dark"
+        android:fontFamily="casual"
+        android:text="Editar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.463"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layout_constraintVertical_bias="0.369" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="casual"
+        android:text="Categoria:"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.143"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Edit_Fecha" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="245dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+
+        android:background="@android:drawable/btn_dropdown"
+        android:entries="@array/categorias_array"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <ImageButton
+        android:id="@+id/deletefecha"
+        android:layout_width="36dp"
+        android:layout_height="39dp"
+        android:src="@android:drawable/ic_delete"
+        app:layout_constraintBottom_toBottomOf="@+id/Edit_Fecha"
+        app:layout_constraintEnd_toEndOf="@+id/Edit_Fecha"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/Edit_Fecha" />
+
+    <TextView
+        android:id="@+id/Editando"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="casual"
+        android:text="Editando Tarea.."
+        android:textColor="@android:color/black"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.42"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>

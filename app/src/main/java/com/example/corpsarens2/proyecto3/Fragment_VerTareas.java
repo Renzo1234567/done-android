@@ -16,6 +16,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -63,6 +66,8 @@ public class Fragment_VerTareas extends Fragment {
    private ArrayList<ListaItems> data;
    private List<TareaDatos> tarea;
    private List<Listado> listado;
+   private Spinner spinner;
+   private TextView textView;
 
 
     public Fragment_VerTareas() {
@@ -102,22 +107,100 @@ public class Fragment_VerTareas extends Fragment {
         View vista=inflater.inflate(R.layout.fragment_fragment__ver_tareas, container, false);
         final RecyclerView recyclerView=(RecyclerView) vista.findViewById(R.id.recyclerid);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         listaobjeto=new ArrayList<>();
         listado=new ArrayList<>();
-        String token = getArguments().getString("Token");
-         ProgressDialog progressDialog = new ProgressDialog((getActivity()));
-        progressDialog.setMessage("Cargando..");
-        progressDialog.show();
-        getuserclient(token,recyclerView,progressDialog);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        final String token = getArguments().getString("token");
+        final String usuario = getArguments().getString("Usuario");
+        getuserclient(token,recyclerView,usuario);
+        spinner=(Spinner)vista.findViewById(R.id.spinner2);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String recuperarcategoria=adapterView.getSelectedItem().toString();
+                if (recuperarcategoria.equals("Todas")){
+                    getuserclient(token,recyclerView,usuario);
+                }
+                if(recuperarcategoria.equals("Personal")){
+                    getcategorias(token,recyclerView,"Personal",usuario);
+                }
+                if(recuperarcategoria.equals("Estudios")){
+                    getcategorias(token,recyclerView,"Estudios",usuario);
+                }
+                if(recuperarcategoria.equals("Trabajo")){
+                    getcategorias(token,recyclerView,"Trabajo",usuario);
+                }
+                if(recuperarcategoria.equals("Hogar")){
+                    getcategorias(token,recyclerView,"Hogar",usuario);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
 
         return vista;
     }
 
-    private void getuserclient(final String token, final RecyclerView recyclerView, final ProgressDialog progressDialog) {
-        try{
+    private void getcategorias(final String token, final RecyclerView recyclerView, String categoria, final String usuario) {
+        final ProgressDialog progressDialog = new ProgressDialog((getActivity()));
+        progressDialog.setMessage("Cargando..");
+        progressDialog.show();
+        SendNetworkRequest enviar = new SendNetworkRequest();
 
+        Retrofit retrofit = enviar.Enviar();
+
+        UserClient service = retrofit.create(UserClient.class);
+        Call<GetCategorias> call=service.getcategoria(token,categoria);
+        call.enqueue(new Callback<GetCategorias>() {
+            @Override
+            public void onResponse(Call<GetCategorias> call, Response<GetCategorias> response) {
+                if (response.isSuccessful()) {
+                    progressDialog.dismiss();
+                  if (response.body().getMensaje()==null){
+                      recyclerView.setVisibility(View.VISIBLE);
+                      List<TareaDatos> lista=response.body().getTarea();
+
+                      adapter=new AdapterDatos(lista,getContext(),token,usuario);
+                      recyclerView.setAdapter(adapter);
+                  }else{
+                      recyclerView.setVisibility(View.GONE);
+
+                  }
+                }
+                else
+                {
+                    try
+                    {
+
+                        JSONArray jObjError = new JSONArray(response.errorBody().string());
+                        Toast.makeText(getActivity(),jObjError.getJSONObject(0).getString("mensaje"),Toast.LENGTH_LONG).show();
+
+
+                    } catch (Exception e) {
+                        Toast.makeText(getActivity(),"Error en el servidor " , Toast.LENGTH_LONG).show();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetCategorias> call, Throwable t) {
+                Toast.makeText(getContext(),"Error en el Servidor",Toast.LENGTH_LONG);
+            }
+        });
+
+    }
+
+    private void getuserclient(final String token, final RecyclerView recyclerView, final String usuario) {
+        try{
+            final ProgressDialog progressDialog = new ProgressDialog((getActivity()));
+            progressDialog.setMessage("Cargando..");
+            progressDialog.show();
             SendNetworkRequest enviar = new SendNetworkRequest();
 
             Retrofit retrofit = enviar.Enviar();
@@ -130,12 +213,10 @@ public class Fragment_VerTareas extends Fragment {
                 public void onResponse(Call<ListaItems> call, Response<ListaItems> response) {
 
                 progressDialog.dismiss();
+                    recyclerView.setVisibility(View.VISIBLE);
                List<TareaDatos> lista=response.body().getTarea();
-
-               adapter=new AdapterDatos(lista,getContext(),token);
+               adapter=new AdapterDatos(lista,getContext(),token,usuario);
                recyclerView.setAdapter(adapter);
-
-
                 }
 
                 @Override

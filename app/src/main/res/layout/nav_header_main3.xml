@@ -20,11 +20,14 @@
         app:srcCompat="@drawable/iconousuario" />
 
     <TextView
+        android:id="@+id/nombreusuario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="casual"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="Usuario"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

@@ -25,7 +25,9 @@
         <activity
             android:name=".Main3Activity"
             android:label="@string/title_activity_main3"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".RecuperarPassword"></activity>
+        <activity android:name=".editar_Tarea"></activity>
     </application>
 
 </manifest>

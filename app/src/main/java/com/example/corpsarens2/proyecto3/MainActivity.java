@@ -25,13 +25,16 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
-    String token;
+    String token,nombreusuario;
     Button Entrar;
     EditText  Usuario;
     EditText Contraseña;
     TextView Texto1;
     TextView Texto2;
     TextView Texto3;
+    TextView Texto4;
+    TextView Texto5;
+    Button OlvideContraseña;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         Texto1 = (TextView) findViewById(R.id.Texto_1);
         Texto2 = (TextView) findViewById(R.id.Texto_2);
         Texto3 = (TextView) findViewById(R.id.Texto_3);
+
+        OlvideContraseña=(Button) findViewById(R.id.Olvide_button);
         Texto2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,6 +55,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(Texto2);
             }
         });
+
+        OlvideContraseña.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent recuperar= new Intent(MainActivity.this,RecuperarPassword.class);
+                startActivity(recuperar);
+            }
+        });
+
         Entrar.setEnabled(true);
         Entrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 String Username=Usuario.getText().toString();
                 String Password=Contraseña.getText().toString();
                 UsuariosLogin usuarioslogin = new UsuariosLogin(Username,Password);
-                sendRequestNetwork(usuarioslogin);
+                sendRequestNetwork(usuarioslogin,Username);
                 Entrar.setEnabled(false);
             }
         });
@@ -67,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void sendRequestNetwork(UsuariosLogin usuarioslogin) {
-
+    private void sendRequestNetwork(final UsuariosLogin usuarioslogin, final String username) {
+        String usuario;
         SendNetworkRequest enviar=new SendNetworkRequest();
         Retrofit retrofit=enviar.Enviar();
         UserClient service = retrofit.create(UserClient.class);
@@ -81,9 +95,13 @@ public class MainActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(),"Login completado ",Toast.LENGTH_LONG).show();
                             token=response.body().getToken().toString();
+                            getnombre(username);
+                            getToken(token);
                             Intent Entrar1= new Intent(MainActivity.this,Main3Activity.class);
                             Entrar1.putExtra("token",token);
+                            Entrar1.putExtra("Usuario",username);
                             startActivity(Entrar1);
+
                                 Entrar.setEnabled(true);
 
 
@@ -98,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),jObjError.getString("mensaje"),Toast.LENGTH_LONG).show();
                         Entrar.setEnabled(true);
                     } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(),"Algo fallo... " , Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"Error en el Servidor " , Toast.LENGTH_LONG).show();
                         Entrar.setEnabled(true);
                     }
                 }
@@ -107,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<UsuariosLogin> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"Algo fallo...",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Error en el servidor",Toast.LENGTH_SHORT).show();
                 Entrar.setEnabled(true);
 
             }
@@ -117,6 +135,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
+    }
+    public String getnombre(String username){
+        String usuario=username;
+
+        return usuario;
+    }
+    public String getToken(String token){
+       String token1=token;
+        return token1;
     }
 
 }

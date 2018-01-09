@@ -15,6 +15,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,7 +45,6 @@ public class FragmentTareas extends Fragment {
     int dia,mes,año;
     int año_hoy,dia_hoy,mes_hoy;
     int recuperar_año,recuperar_mes,recuperar_dia;
-
     View rootView;
     TextView Titulo;
     EditText Edit_Titulo;
@@ -54,6 +55,7 @@ public class FragmentTareas extends Fragment {
     Button Crear_Tarea;
     Spinner spiner;
     String recuperarcategoria;
+    ImageButton delete;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -112,6 +114,13 @@ public class FragmentTareas extends Fragment {
        Edit_Descripcion=(EditText)rootView.findViewById(R.id.Edit_Descripcion);
        Edit_Titulo=(EditText)rootView.findViewById(R.id.Edit_Titulo);
        Edit_Fecha=(EditText)rootView.findViewById(R.id.Edit_Fecha);
+       delete=(ImageButton)rootView.findViewById(R.id.deletefecha);
+       delete.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               Edit_Fecha.setText("");
+           }
+       });
        spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
            @Override
            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -157,20 +166,23 @@ public class FragmentTareas extends Fragment {
         });
 
        Crear_Tarea=(Button)rootView.findViewById((R.id.Crear_Tarea));
-                Crear_Tarea.setEnabled(false);
+
             Crear_Tarea.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     String titulo,fecha,descripcion;
-                    if (recuperarcategoria.equals("Personal")){
-                        recuperarcategoria="Peronal";
-                    }
+
                     titulo= Edit_Titulo.getText().toString();
                     fecha= Fecha.getText().toString();
                     descripcion= Edit_Descripcion.getText().toString();
-                        Tarea creatarea=new Tarea(titulo,descripcion,fecha,recuperarcategoria);
-                        sendRequestNetwork(creatarea);
-                        Crear_Tarea.setEnabled(false);
+                        if (fecha.equals("")) {
+                            Tareasinfecha creartareasinfecha=new Tareasinfecha(titulo,descripcion,recuperarcategoria);
+                            sendRequestNetworksintarea(creartareasinfecha);
+                        }else{
+                            Tarea creatarea = new Tarea(titulo, descripcion, fecha, recuperarcategoria);
+                    sendRequestNetwork(creatarea);
+                    Crear_Tarea.setEnabled(false);
+                        }
                 }
             });
 
@@ -180,6 +192,40 @@ public class FragmentTareas extends Fragment {
 
     }
 
+    private void sendRequestNetworksintarea(Tareasinfecha tareasinfecha) {
+        String token=getArguments().getString("Token");
+        SendNetworkRequest enviar= new SendNetworkRequest();
+        Retrofit retrofit=enviar.Enviar();
+        UserClient service=retrofit.create(UserClient.class);
+        Call<Tareasinfecha> call=service.createTareaSinFecha(token,tareasinfecha);
+        call.enqueue(new Callback<Tareasinfecha>() {
+            @Override
+            public void onResponse(Call<Tareasinfecha> call, Response<Tareasinfecha> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getActivity().getApplicationContext(),"Tarea Creada! ",Toast.LENGTH_LONG).show();
+                    Crear_Tarea.setEnabled(true);
+
+                } else
+                {
+                    try
+                    { JSONArray jObjError = new JSONArray(response.errorBody().string());
+                        Toast.makeText(getActivity().getApplicationContext(),jObjError.getJSONObject(0).getString("mensaje"),Toast.LENGTH_LONG).show();
+                        Crear_Tarea.setEnabled(true);
+                    } catch (Exception e) {
+                        Toast.makeText(getActivity().getApplicationContext(),"Error en el Servidor "+ e.getMessage() , Toast.LENGTH_LONG).show();
+                        Crear_Tarea.setEnabled(true);
+                    }
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<Tareasinfecha> call, Throwable t) {
+                Toast.makeText(getActivity().getApplicationContext(),"Error en el servidor..",Toast.LENGTH_SHORT).show();
+                Crear_Tarea.setEnabled(true);
+            }
+        });
+    }
 
 
     private void sendRequestNetwork(Tarea creartarea) {

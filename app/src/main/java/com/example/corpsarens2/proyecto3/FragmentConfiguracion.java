@@ -7,6 +7,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONObject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 
 /**
@@ -26,6 +37,9 @@ public class FragmentConfiguracion extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    TextView texto1,texto2,texto;
+    EditText edit_nueva,edit_vieja;
+    Button enviar2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -63,8 +77,58 @@ public class FragmentConfiguracion extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fragment_configuracion, container, false);
+       View vista= inflater.inflate(R.layout.fragment_fragment_configuracion, container, false);
+        final String token=getArguments().getString("Token");
+
+        texto1=(TextView) vista.findViewById(R.id.contraseña_actual);
+        texto2=(TextView) vista.findViewById(R.id.nuevaContraseña);
+        edit_vieja=(EditText) vista.findViewById(R.id.editcontraseña);
+        edit_nueva=(EditText) vista.findViewById(R.id.editnuevacontraseña);
+        enviar2=(Button) vista.findViewById(R.id.Boton_Nueva_Contraseña);
+        texto=(TextView) vista.findViewById((R.id.Texto));
+        enviar2.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                enviar2.setEnabled(false);
+                String nueva=edit_vieja.getText().toString();
+                String vieja=edit_nueva.getText().toString();
+                CambiarContrasena cambiarContraseña=new CambiarContrasena(nueva,vieja);
+
+                SendNetworkRequest enviar= new SendNetworkRequest();
+                Retrofit retrofit=enviar.Enviar();
+                UserClient service=retrofit.create(UserClient.class);
+                Call<CambiarContrasena> call=service.cambiarcontraseña(token,cambiarContraseña);
+                call.enqueue(new Callback<CambiarContrasena>() {
+                    @Override
+                    public void onResponse(Call<CambiarContrasena> call, Response<CambiarContrasena> response) {
+                       enviar2.setEnabled(true);
+                       if (response.isSuccessful()){
+                           Toast.makeText(getActivity(),"Contraseña cambiada",Toast.LENGTH_LONG).show();
+                       }else
+                           try{
+                           JSONObject jsonObject=new JSONObject(response.errorBody().string());
+                        Toast.makeText(getActivity(),jsonObject.getString("mensaje"),Toast.LENGTH_LONG).show();
+
+                    } catch (Exception e) {
+                        Toast.makeText(getActivity(),"Error en el servidor " , Toast.LENGTH_LONG).show();
+
+                    }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<CambiarContrasena> call, Throwable t) {
+                        enviar2.setEnabled(true);
+                        Toast.makeText(getActivity(),"Error en el servidor " , Toast.LENGTH_LONG).show();
+                    }
+                });
+
+            }
+        });
+
+
+        return vista;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

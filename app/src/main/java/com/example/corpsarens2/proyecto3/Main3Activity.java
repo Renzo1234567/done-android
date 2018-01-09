@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.support.v4.app.Fragment;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,16 +21,17 @@ import android.widget.Toast;
 
 public class Main3Activity extends AppCompatActivity
 
-        implements NavigationView.OnNavigationItemSelectedListener,FragmentTareas.OnFragmentInteractionListener,FragmentAyuda.OnFragmentInteractionListener,FragmentConfiguracion.OnFragmentInteractionListener, Fragment_VerTareas.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener,FragmentTareas.OnFragmentInteractionListener,FragmentConfiguracion.OnFragmentInteractionListener, Fragment_VerTareas.OnFragmentInteractionListener {
     TextView Texto1;
     ImageView Flecha;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String usuario1=getIntent().getExtras().getString("Usuario");
+        Texto1 = (TextView) findViewById(R.id.Empezar1);
+        Flecha = (ImageView) findViewById(R.id.Flecha1);
 
-        Texto1=(TextView) findViewById(R.id.Empezar1);
-        Flecha=(ImageView) findViewById(R.id.Flecha1);
         setContentView(R.layout.activity_main3);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -40,7 +42,12 @@ public class Main3Activity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        TextView usuario = (TextView) headerView.findViewById(R.id.nombreusuario);
+        usuario.setText(usuario1);
+
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
@@ -67,6 +74,7 @@ public class Main3Activity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         String token=getIntent().getExtras().getString("token");
+        String usuario1=getIntent().getExtras().getString("Usuario");
         // Handle navigation view item clicks here.
         int id = item.getItemId();
             Boolean FragmentTransaction=false;
@@ -77,16 +85,18 @@ public class Main3Activity extends AppCompatActivity
             bundle.putString("Token",token);
             fragment.setArguments(bundle);
             FragmentTransaction=true;
-        } else if (id == R.id.nav_ayuda) {
-            fragment= new FragmentAyuda();
-            FragmentTransaction=true;
-        } else if (id == R.id.nav_configuracion) {
+        }  else if (id == R.id.nav_configuracion) {
+
             fragment= new FragmentConfiguracion();
+            Bundle bundle=new Bundle();
+            bundle.putString("Token",token);
+            fragment.setArguments(bundle);
             FragmentTransaction=true;
         } else if (id==R.id.nav_vertareas){
             fragment= new Fragment_VerTareas();
             Bundle bundle=new Bundle();
-            bundle.putString("Token",token);
+            bundle.putString("token",token);
+            bundle.putString("Usuario",usuario1);
             fragment.setArguments(bundle);
             FragmentTransaction=true;
         }else if (id == R.id.nav_cerrarsesion){

@@ -19,10 +19,6 @@
             android:icon="@drawable/ic_menu_manage"
             android:title="Configuracion" />
         <item
-            android:id="@+id/nav_ayuda"
-            android:icon="@drawable/ayuda"
-            android:title="Ayuda" />
-        <item
             android:id="@+id/nav_cerrarsesion"
             android:icon="@drawable/candado"
             android:title="Cerrar Sesion" />

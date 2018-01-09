@@ -78,6 +78,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
        Registrarse.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
+               Registrarse.setEnabled(false);
                validar();
                String username, email, password, nombre, apellido, fechaDeNacimiento, formaDeRegistro;
                nombre = Nombre.getText().toString();
@@ -122,24 +123,24 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
                 if (response.isSuccessful()) {
                         Toast.makeText(getApplicationContext(),"Usuario registrado! "+response.body().getMessage(),Toast.LENGTH_LONG).show();
-
-
-                            Intent Registrarse= new Intent(Main2Activity.this,MainActivity.class);
-                            startActivity(Registrarse);
-
+                            Intent Registrarsee= new Intent(Main2Activity.this,MainActivity.class);
+                            startActivity(Registrarsee);
+                    Registrarse.setEnabled(true);
 
                 } else
                 {
                     try
 
                     {
-                        System.out.println(response.errorBody());
+
                         JSONArray jObjError = new JSONArray(response.errorBody().string());
                         Toast.makeText(getApplicationContext(),jObjError.getJSONObject(0).getString("mensaje"),Toast.LENGTH_LONG).show();
-                        System.out.println(jObjError);
+                        Registrarse.setEnabled(true);
+
 
                     } catch (Exception e) {
                         Toast.makeText(getApplicationContext(),"Error en el servidor " , Toast.LENGTH_LONG).show();
+                        Registrarse.setEnabled(true);
 
                     }
                 }
@@ -147,7 +148,8 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onFailure(Call<Usuarios> call, Throwable t) {
-                    Toast.makeText(Main2Activity.this,"Algo fallo...",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Main2Activity.this,"Error en el Servidor",Toast.LENGTH_SHORT).show();
+                Registrarse.setEnabled(true);
 
             }
         });
@@ -224,6 +226,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         if (edad1<18){
             Fecha_Nacimiento.setError(getString(R.string.error_edad));
             Fecha_Nacimiento.requestFocus();
+            Toast.makeText(this, "No se permiten menores de edad", Toast.LENGTH_SHORT).show();
             admitir=false;
 
         }
@@ -234,6 +237,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         if(edad1==18 &&mes_hoy<recuperar_mes){
             Fecha_Nacimiento.setError(getString(R.string.error_edad));
             Fecha_Nacimiento.requestFocus();
+            Toast.makeText(this, "No se permiten menores de edad", Toast.LENGTH_SHORT).show();
             admitir=false;
         }
         if (edad1==18 && mes_hoy==recuperar_mes){
@@ -243,6 +247,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
             if(dia_hoy<recuperar_dia){
                 Fecha_Nacimiento.setError(getString(R.string.error_edad));
                 Fecha_Nacimiento.requestFocus();
+                Toast.makeText(this, "No se permiten menores de edad", Toast.LENGTH_SHORT).show();
                 admitir=false;
             }
             if(dia_hoy==recuperar_dia){

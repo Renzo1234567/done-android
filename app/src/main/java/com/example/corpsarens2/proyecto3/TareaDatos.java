@@ -33,7 +33,9 @@ public class TareaDatos {
     @SerializedName("completado")
     @Expose
     private Boolean completado;
-
+    @SerializedName("categoria")
+    @Expose
+    private String categoria;
     /**
      * No args constructor for use in serialization
      *
@@ -51,7 +53,7 @@ public class TareaDatos {
      * @param descripcion
      * @param fechaParaSerCompletada
      */
-    public TareaDatos(String id, String titulo, String descripcion, String fechaParaSerCompletada, String creador, Integer v, String fechaDeRegistro, Boolean completado) {
+    public TareaDatos(String id, String titulo, String descripcion, String fechaParaSerCompletada,String categoria, String creador, Integer v, String fechaDeRegistro, Boolean completado) {
         super();
         this.id = id;
         this.titulo = titulo;
@@ -61,6 +63,7 @@ public class TareaDatos {
         this.v = v;
         this.fechaDeRegistro = fechaDeRegistro;
         this.completado = completado;
+        this.categoria=categoria;
     }
 
     public String getId() {
@@ -125,5 +128,9 @@ public class TareaDatos {
 
     public void setCompletado(Boolean completado) {
         this.completado = completado;
+    }
+
+    public String getCategoria() {
+        return categoria;
     }
 }
